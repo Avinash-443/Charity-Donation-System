@@ -1,0 +1,38 @@
+<!-- templates/admin_disputes.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dispute Management</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body style="background-image: url('{{ url_for('static', filename='images/purple_image.jpeg') }}'); background-size: cover;">
+    <div style="margin: 2rem auto; max-width: 90%; background: white; padding: 2rem; border-radius: 1rem;">
+        <h2>⚠ Dispute Management</h2>
+        {% if campaigns %}
+            {% for campaign in campaigns %}
+                <div style="border: 1px solid #ccc; padding: 1rem; margin: 1rem 0; border-radius: 0.5rem;">
+                    <h3>{{ campaign.title }}</h3>
+                    <p><strong>Charity:</strong> {{ campaign.charityEmail }}</p>
+                    <p><strong>Status:</strong> {{ campaign.status }}</p>
+                    <p><strong>Funds Raised:</strong> {{ campaign.fundsRaised }}</p>
+                    {% if campaign.withdraw_fund_usage_proof %}
+                        <p><strong>Proof Document:</strong>
+                            <a href="{{ campaign.withdraw_fund_usage_proof }}" target="_blank">Review Document</a>
+                        </p>
+                    {% endif %}
+                    <form method="POST" action="/handle_dispute_action" style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <input type="hidden" name="campaignId" value="{{ campaign.campaignId }}">
+                        <input type="hidden" name="charityId" value="{{ campaign.charityId }}">
+                        <button name="action" value="freeze" style="background: orange; padding: 0.5rem 1rem;">❗ Freeze</button>
+                        <button name="action" value="ban" style="background: red; color: white; padding: 0.5rem 1rem;">🚫 Ban</button>
+                        <button name="action" value="refund" style="background: green; color: white; padding: 0.5rem 1rem;">⚖ Refund</button>
+                    </form>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No active campaigns found.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

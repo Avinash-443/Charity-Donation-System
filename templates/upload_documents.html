@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Proof of Use</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="content-container">
+        <h1>Upload Proof of Use for Campaign</h1>
+
+        <p>Please upload documents (images, PDFs, etc.) that show how the funds were used in your campaign.</p>
+        
+        <form method="POST" enctype="multipart/form-data">
+            <label for="proof_file">Select Proof File:</label>
+            <input type="file" name="proof_file" id="proof_file" required>
+            
+            <button type="submit">Upload Proof</button>
+        </form>
+
+        <br>
+        <a href="{{ url_for('view_my_campaigns') }}">Back to My Campaigns</a>
+    </div>
+</body>
+</html>

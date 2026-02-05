@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pending Charity Applications</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            background-color: #f3f0ff;
+            font-family: 'Segoe UI', sans-serif;
+            padding: 30px;
+        }
+
+        h1 {
+            color: #5a1e9c;
+        }
+
+        .charity-box {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .charity-box h3 {
+            margin: 0 0 10px;
+        }
+
+        .charity-box p {
+            margin: 5px 0;
+        }
+
+        .btn-group {
+            margin-top: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            margin-right: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .approve-btn {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .reject-btn {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .doc-link {
+            color: #007bff;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🕵️‍♂️ Pending Charity Applications</h1>
+
+    {% if charities %}
+        {% for charity in charities %}
+            <div class="charity-box">
+                <h3>{{ charity.orgName }}</h3>
+                <p><strong>Email:</strong> {{ charity.email }}</p>
+                <p><strong>Phone:</strong> {{ charity.phone }}</p>
+
+                <p><strong>Registration Docs:</strong>
+                    {% if charity.registrationDocs %}
+                        <a href="{{ charity.registrationDocs | replace('\\', '/') }}" target="_blank" class="doc-link">View</a>
+                    {% else %}
+                        No document provided.
+                    {% endif %}
+                </p>
+
+                {% if charity.createdAt %}
+                    <p><strong>Submitted At:</strong> {{ charity.createdAt.strftime('%d %B %Y at %I:%M %p') }}</p>
+                {% endif %}
+
+                <div class="btn-group">
+                    <form method="POST" action="{{ url_for('approve_charity', charity_id=charity.id) }}" style="display:inline;">
+                        <button type="submit" class="btn approve-btn">✅ Approve</button>
+                    </form>
+                    <form method="POST" action="{{ url_for('reject_charity', charity_id=charity.id) }}" style="display:inline;">
+                        <button type="submit" class="btn reject-btn">❌ Reject</button>
+                    </form>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No pending charity applications.</p>
+    {% endif %}
+
+</body>
+</html>

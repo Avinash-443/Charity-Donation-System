@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ charity.orgName }} - Details</title>
+</head>
+<body>
+    <div style="background: white; max-width: 1000px; margin: 30px auto; padding: 30px; border-radius: 15px;">
+        <h1>{{ charity.orgName }}</h1>
+        <img src="{{ charity.registrationDocs }}" alt="Logo" style="width: 100px; height: 100px; border-radius: 50%;">
+        <p><strong>Email:</strong> {{ charity.email }}</p>
+        <p><strong>Phone:</strong> {{ charity.phone }}</p>
+        <p><strong>Charity ID:</strong> {{ charity.charityId }}</p>
+
+        <hr>
+        <h2>📢 Ongoing Campaigns</h2>
+        {% if ongoing_campaigns %}
+            {% for campaign in ongoing_campaigns %}
+                <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 20px; border-radius: 10px;">
+                    <h3>{{ campaign.title }}</h3>
+                    <p><strong>Description:</strong> {{ campaign.description }}</p>
+                    <p><strong>Goal:</strong> ₹{{ campaign.goalAmount }}</p>
+                    <p><strong>Raised:</strong> ₹{{ campaign.raisedAmount }}</p>
+                    <p><strong>End Date:</strong> {{ campaign.endDate.strftime('%Y-%m-%d') }}</p>
+                    
+                    <form action="{{ url_for('donate_to_campaign', campaign_id=campaign.id) }}" method="POST">
+                        <input type="number" name="amount" min="1" placeholder="Enter amount in ₹" required>
+                        <button type="submit" style="background: linear-gradient(115deg, #cf55e8, #7b17c2); color: white; border: none; padding: 5px 10px; border-radius: 5px;">Donate Now</button>
+                    </form>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No ongoing campaigns.</p>
+        {% endif %}
+
+        <hr>
+        <h2>📁 Past Campaigns</h2>
+        {% if past_campaigns %}
+            {% for campaign in past_campaigns %}
+                <div style="border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 10px;">
+                    <h3>{{ campaign.title }}</h3>
+                    <p><strong>Description:</strong> {{ campaign.description }}</p>
+                    <p><strong>Goal:</strong> ₹{{ campaign.goalAmount }}</p>
+                    <p><strong>Raised:</strong> ₹{{ campaign.raisedAmount }}</p>
+                    <p><strong>Ended on:</strong> {{ campaign.endDate.strftime('%Y-%m-%d') }}</p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No past campaigns.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

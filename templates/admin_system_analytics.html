@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>System Analytics</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            background-image: url("/static/images/purple_image.jpeg");
+            background-size: cover;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            background-color: white;
+            width: 80%;
+            margin: 40px auto;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+        .stat-card {
+            width: 48%;
+            background: #f4f4f4;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            font-size: 18px;
+            text-align: center;
+        }
+        canvas {
+            margin: 30px auto;
+            display: block;
+            max-width: 600px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>System Analytics Dashboard</h2>
+
+    <div class="stats">
+        <div class="stat-card">Total Number of Charities Registered: <strong>{{ total_charities }}</strong></div>
+        <div class="stat-card">Total Number of Donors Registered: <strong>{{ total_donors }}</strong></div>
+        <div class="stat-card">Total Number of Reviews Submitted: <strong>{{ total_reviews }}</strong></div>
+        <div class="stat-card">Total Number of Donation Transactions: <strong>{{ total_transactions }}</strong></div>
+    </div>
+
+    <h3 style="text-align:center;">Distribution (Pie Chart)</h3>
+    <canvas id="pieChart"></canvas>
+
+    <h3 style="text-align:center;">Campaign Status Comparison (Bar Chart)</h3>
+    <canvas id="barChart"></canvas>
+</div>
+
+<script>
+    // Pie Chart
+    const pieCtx = document.getElementById('pieChart').getContext('2d');
+    new Chart(pieCtx, {
+        type: 'pie',
+        data: {
+            labels: ['Charities', 'Donors', 'Reviews', 'Transactions'],
+            datasets: [{
+                label: 'System Data',
+                data: [{{ total_charities }}, {{ total_donors }}, {{ total_reviews }}, {{ total_transactions }}],
+                backgroundColor: [
+                    '#cf55e8',
+                    '#7b17c2',
+                    '#ff9f40',
+                    '#36a2eb'
+                ]
+            }]
+        }
+    });
+
+    // Bar Chart
+    const barCtx = document.getElementById('barChart').getContext('2d');
+    new Chart(barCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Verified', 'Completed', 'Active', 'Fraudulent'],
+            datasets: [{
+                label: 'Campaign Status Count',
+                data: [
+                    {{ status_counts['Verified'] }},
+                    {{ status_counts['Completed'] }},
+                    {{ status_counts['active'] }},
+                    {{ status_counts['Fraudulent'] }}
+                ],
+                backgroundColor: [
+                    '#4caf50',
+                    '#2196f3',
+                    '#ff9800',
+                    '#f44336'
+                ]
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    stepSize: 1
+                }
+            }
+        }
+    });
+</script>
+</body>
+</html>

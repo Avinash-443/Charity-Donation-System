@@ -1,0 +1,31 @@
+# Virtual environment (do NOT commit)
+.venv/
+venv/
+env/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Flask / Python temp files
+instance/
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor / IDE
+.vscode/
+.idea/
+
+# Environment variables
+.env
+
+# Ignore media / large files (optional but safe)
+*.mp4
+*.mkv
+*.avi
+*.mov
+*.webm

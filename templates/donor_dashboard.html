@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Donor Dashboard</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", sans-serif;
+      background: #f5f2ff;
+    }
+
+    header {
+      background: linear-gradient(115deg, #cf55e8, #7b17c2);
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .logout {
+      float: right;
+      font-size: 16px;
+      margin-top: -35px;
+      margin-right: 20px;
+    }
+
+    .logout a {
+      color: white;
+      text-decoration: underline;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 20px;
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
+    }
+
+    h2 {
+      color: #6c2eb9;
+      margin-bottom: 20px;
+    }
+
+    .section {
+      border: 1px solid #ddd;
+      padding: 20px;
+      margin-bottom: 30px;
+      border-radius: 10px;
+      background-color: #faf8ff;
+    }
+
+    .section h3 {
+      margin-top: 0;
+      color: #4c1697;
+    }
+
+    .btn {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 10px 18px;
+      background: linear-gradient(115deg, #cf55e8, #7b17c2);
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+
+    .btn:hover {
+      background: linear-gradient(115deg, #a24be1, #5d11a1);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    Donor Dashboard
+    <div class="logout">
+      <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+  </header>
+
+  <div class="container">
+
+    <!-- 1. Explore Verified Charities -->
+    <div class="section">
+      <h3>🔍 Explore Verified Charities</h3>
+      <p>Browse through verified organizations and discover their causes.</p>
+      <a href="{{ url_for('explore_verified_charities') }}" class="btn">Explore Charities</a>
+    </div>
+
+    <!-- 2. Donate to a Campaign -->
+    <div class="section">
+      <h3>💸 Donate to a Campaign</h3>
+      <p>Contribute to a cause you care about using secure blockchain transactions.</p>
+      <a href="{{ url_for('donate_now') }}" class="btn">Donate Now</a>
+    </div>
+
+    <!-- 3. My Donation History -->
+    <div class="section">
+      <h3>📜 My Donation History</h3>
+      <p>Track your past donations, download receipts, and verify transactions.</p>
+      <a href="{{ url_for('view_donation_history') }}" class="btn">View Donations</a>
+    </div>
+
+    <!-- 4. Charity Performance & Transparency -->
+    <div class="section">
+      <h3>📊 Charity Performance & Transparency</h3>
+      <p>Review how your donated funds are used and the outcomes of each campaign.</p>
+      <a href="{{ url_for('view_performance') }}" class="btn">View Performance</a>
+    </div>
+
+    <!-- 5. Rate / Review Charities -->
+    <div class="section">
+      <h3>⭐ Rate & Review Charities</h3>
+      <p>Help other donors by sharing your feedback and rating charities you've supported.</p>
+      <a href="{{ url_for('write_review') }}" class="btn">Write a Review</a>
+    </div>
+
+  </div>
+
+</body>
+</html>

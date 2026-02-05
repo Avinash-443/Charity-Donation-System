@@ -1,0 +1,124 @@
+<!-- templates/withdraw_fund.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Withdraw Funds</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        function openWithdrawForm(campaignId) {
+            document.getElementById("withdrawModal").style.display = "block";
+            document.getElementById("campaign_id").value = campaignId;
+        }
+
+        function closeWithdrawForm() {
+            document.getElementById("withdrawModal").style.display = "none";
+        }
+    </script>
+    <style>
+        .campaign-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        #withdrawModal {
+            display: none;
+            position: fixed;
+            z-index: 999;
+            background-color: rgba(0, 0, 0, 0.6);
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+        .modal-content {
+            background: white;
+            padding: 30px;
+            margin: 10% auto;
+            width: 40%;
+            border-radius: 10px;
+        }
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+            align-items: center;
+        }
+        .button-group button,
+        .button-group input[type="submit"] {
+            padding: 10px 15px;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            background: linear-gradient(115deg, #cf55e8, #7b17c2);
+            cursor: pointer;
+        }
+        .button-group button:disabled {
+            background-color: grey;
+            cursor: not-allowed;
+        }
+        .button-group form {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Withdraw Funds</h2>
+
+        {% for campaign in campaigns %}
+            <div class="campaign-card">
+                <h3>{{ campaign['title'] }}</h3>
+                <p>Status: {{ campaign['status'] }}</p>
+                <p>Raised: {{ campaign['raisedAmount'] }} ETH</p>
+                <p>Target: {{ campaign['targetAmountETH'] }} ETH</p>
+                <p>Withdraw Status: {{ campaign.get('withdraw_status', 'Pending') }}</p>
+
+                <div class="button-group">
+                    <!-- Withdraw Button -->
+                    <button 
+                        onclick="openWithdrawForm('{{ campaign['campaignId'] }}')"
+                        {% if campaign.get('withdraw_status') == 'completed' %}disabled{% endif %}>
+                        Withdraw
+                    </button>
+
+                    <!-- Upload Proof Button -->
+                    <form method="POST" action="/upload_withdraw_proof" enctype="multipart/form-data">
+                        <input type="hidden" name="campaignId" value="{{ campaign['campaignId'] }}">
+                        <input type="file" name="proof_document" required>
+                        <input type="submit" value="Upload Proof">
+                    </form>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- Withdraw Modal -->
+    <div id="withdrawModal">
+        <div class="modal-content">
+            <span onclick="closeWithdrawForm()" style="float:right;cursor:pointer;">❌</span>
+            <form method="POST" action="/process_withdraw">
+                <input type="hidden" id="campaign_id" name="campaignId">
+                <label>Account Holder Name:</label><br>
+                <input type="text" name="account_holder" required><br><br>
+                <label>Account Number:</label><br>
+                <input type="text" name="account_number" required><br><br>
+                <label>Fund Usage Description:</label><br>
+                <textarea name="description" required></textarea><br><br>
+                <label>Usage Domain:</label><br>
+                <select name="usage_domain">
+                    <option>Education</option>
+                    <option>Healthcare</option>
+                    <option>Farmer</option>
+                    <option>Animal Welfare</option>
+                    <option>Others</option>
+                </select><br><br>
+                <button type="submit">Confirm Withdraw</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

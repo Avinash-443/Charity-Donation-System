@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Campaign Full Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url("/static/images/purple_image.jpeg") no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+        }
+        .container {
+            max-width: 700px;
+            margin: auto;
+            background: white;
+            color: black;
+            padding: 30px;
+            margin-top: 50px;
+            border-radius: 16px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        h2 {
+            color: #7b17c2;
+        }
+        .btn {
+            background: linear-gradient(115deg, #cf55e8, #7b17c2);
+            color: white;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 8px;
+            display: inline-block;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>{{ campaign.title }}</h2>
+        <p><strong>Campaign ID:</strong> {{ campaign.campaignId }}</p>
+        <p><strong>Category:</strong> {{ campaign.category }}</p>
+        <p><strong>Charity ID:</strong> {{ campaign.charityId }}</p>
+        <p><strong>Created At:</strong> {{ campaign.createdAt }}</p>
+        <p><strong>Description:</strong> {{ campaign.description }}</p>
+        <p><strong>Start Date:</strong> {{ campaign.startDate }}</p>
+        <p><strong>End Date:</strong> {{ campaign.endDate }}</p>
+        <p><strong>Funds Raised:</strong> {{ campaign.fundsRaised }}</p>
+        <p><strong>Target Amount:</strong> {{ campaign.targetAmountETH }}</p>
+        <p><strong>Status:</strong> {{ campaign.status }}</p>
+        <p><strong>Withdraw Status:</strong> {{ campaign.withdraw_status }}</p>
+
+        {% if campaign.proofOfUse %}
+            <p><strong>Proof of Use:</strong>
+                <a class="btn" href="{{ campaign.proofOfUse }}" target="_blank">View</a>
+            </p>
+        {% endif %}
+
+        {% if campaign.withdraw_fund_usage_proof %}
+            <p><strong>Withdraw Usage Proof:</strong>
+                <a class="btn" href="{{ campaign.withdraw_fund_usage_proof }}" target="_blank">View</a>
+            </p>
+        {% endif %}
+    </div>
+</body>
+</html>

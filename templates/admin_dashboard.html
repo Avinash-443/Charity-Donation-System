@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard – Transparent Charity System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f3f0ff;
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            background-color: #7b17c2;
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar h1 {
+            margin: 0;
+        }
+
+        .profile-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .profile-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: white;
+            min-width: 180px;
+            box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: #333;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f2f2f2;
+        }
+
+        .profile-dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dashboard {
+            padding: 30px;
+        }
+
+        .section {
+            background-color: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .section h2 {
+            margin-top: 0;
+            color: #5a1e9c;
+        }
+
+        .section p {
+            margin: 10px 0;
+            color: #444;
+        }
+
+        .section button {
+            background: linear-gradient(115deg, #cf55e8, #7b17c2);
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .section button:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <h1>Admin Dashboard</h1>
+    <div class="profile-dropdown">
+        <button class="profile-btn"><i class="fas fa-user-circle"></i> Admin</button>
+        <div class="dropdown-content">
+            <a href="#">View Profile</a>
+            <a href="#">Change Password</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+    </div>
+</div>
+
+<div class="dashboard">
+
+    <div class="section">
+        <h2>🕵️‍♂️ Pending Charity Applications</h2>
+        <p>Review charity registrations awaiting approval.</p>
+        <a href="{{ url_for('pending_charities') }}"><button>Review Pending Charities</button></a>
+    </div>
+
+    <div class="section">
+        <h2>📦 All Campaigns Overview</h2>
+        <p>Inspect, filter, and flag charity campaigns across the system.</p>
+        <a href="{{ url_for('admin_campaigns') }}"><button>View All Campaigns</button></a>
+    </div>
+
+    <div class="section">
+        <h2>🧾 Donation Ledger</h2>
+        <p>Monitor all donations and associated blockchain transactions.</p>
+        <a href="{{ url_for('global_donation_ledger') }}"><button>Global Donation Ledger</button></a>
+    </div>
+
+    <div class="section">
+        <h2>⚠ Dispute Management</h2>
+        <p>Handle complaints, freeze accounts, or trigger refunds if needed.</p>
+        <a href="{{ url_for('admin_disputes') }}"><button>Handle Disputes</button></a>
+    </div>
+
+    <div class="section">
+        <h2>📊 System Analytics</h2>
+        <p>Track performance metrics, donation statistics, and campaign success rates.</p>
+        <a href="{{ url_for('admin_system_analytics') }}"><button>System Analytics</button></a>
+    </div>
+
+</div>
+
+</body>
+</html>

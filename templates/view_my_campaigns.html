@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Campaigns</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: url('/static/images/purple_image.jpeg') no-repeat center center fixed;
+            background-size: cover;
+            font-family: Arial, sans-serif;
+            color: #333;
+        }
+
+        .content-container {
+            background: white;
+            width: 90%;
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.15);
+        }
+
+        h1 {
+            text-align: center;
+            color: #7b17c2;
+            margin-bottom: 30px;
+        }
+
+        button {
+            display: block;
+            margin: 0 auto 30px auto;
+            background: linear-gradient(115deg, #cf55e8, #7b17c2);
+            color: white;
+            padding: 12px 25px;
+            font-size: 16px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        button:hover {
+            opacity: 0.95;
+        }
+
+        .campaigns-list {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .campaign-card {
+            background-color: #f9f9f9;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease;
+        }
+
+        .campaign-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .campaign-card h2 {
+            color: #7b17c2;
+            margin-bottom: 10px;
+        }
+
+        .campaign-card p {
+            margin: 6px 0;
+            font-size: 15px;
+        }
+
+        .campaign-card a {
+            display: inline-block;
+            margin-top: 10px;
+            margin-right: 10px;
+            background-color: #7b17c2;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+
+        .campaign-card a:hover {
+            background-color: #5e0da5;
+        }
+    </style>
+</head>
+<body>
+    <div class="content-container">
+        <h1>My Campaigns</h1>
+        <button onclick="window.location.href='/create_campaign'">Create New Campaign</button>
+        
+        {% if campaigns %}
+        <div class="campaigns-list">
+            {% for campaign in campaigns %}
+            <div class="campaign-card">
+                <h2>{{ campaign.title }}</h2>
+                <p><strong>Goal:</strong> {{ campaign.targetAmountETH }} ETH</p>
+                <p><strong>Funds Raised:</strong> {{ campaign.fundsRaised }} ETH</p>
+                <p><strong>Status:</strong> 
+                    {% if campaign.active %}
+                        Ongoing
+                    {% else %}
+                        Ended
+                    {% endif %}
+                </p>
+                <p><strong>End Date:</strong> {{ campaign.endDate }}</p>
+                <p><strong>Days Left:</strong> {{ campaign.endDate|date_diff }} days</p>
+                <a href="{{ url_for('view_donations', campaign_id=campaign.campaignId) }}">View Donations</a>
+                <a href="{{ url_for('upload_documents', campaign_id=campaign.campaignId) }}">Upload Proof of Use</a>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p>You have no campaigns at the moment.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

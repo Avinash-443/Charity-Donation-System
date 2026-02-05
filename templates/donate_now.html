@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Donate Now</title>
+    <style>
+        body {
+            background-image: url("/static/images/purple_image.jpeg");
+            background-size: cover;
+        }
+        .campaign-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px auto;
+            width: 60%;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .btn {
+            background: linear-gradient(115deg, #cf55e8, #7b17c2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align:center; color:white;">Active Campaigns</h1>
+    {% for campaign in campaigns %}
+        <div class="campaign-card">
+            <h2>{{ campaign.title }}</h2>
+            <p><strong>Category:</strong> {{ campaign.category }}</p>
+            <p><strong>Description:</strong> {{ campaign.description }}</p>
+            <p><strong>Start Date:</strong> {{ campaign.startDate }}</p>
+            <p><strong>End Date:</strong> {{ campaign.endDate }}</p>
+            <p><strong>Target:</strong> {{ campaign.targetAmountETH }} ETH</p>
+            <p><strong>Funds Raised:</strong> {{ campaign.fundsRaised }} ETH</p>
+            <form method="get" action="{{ url_for('campaign_details', campaign_id=campaign.campaignId) }}">
+                <button type="submit" class="btn">Donate</button>
+            </form>
+        </div>
+    {% endfor %}
+</body>
+</html>

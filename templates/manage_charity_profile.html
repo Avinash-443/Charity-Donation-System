@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Manage Charity Profile</title>
+    <style>
+        body {
+            background-image: url("/static/images/purple_image.jpeg");
+            background-size: cover;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            background-color: white;
+            width: 600px;
+            margin: 80px auto;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 25px;
+        }
+        .btn {
+            background: linear-gradient(115deg, #cf55e8, #7b17c2);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .btn:hover {
+            opacity: 0.9;
+        }
+        .file-preview {
+            margin-top: 10px;
+        }
+        .file-preview img {
+            max-width: 100px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Manage Profile</h2>
+    <form action="/manage_charity_profile" method="POST" enctype="multipart/form-data">
+        <label>Email (Not Editable):</label>
+        <input type="email" name="email" value="{{ charity.email }}" readonly>
+
+        <label>Organization Name:</label>
+        <input type="text" name="orgName" value="{{ charity.orgName }}" required>
+
+        <label>Phone Number:</label>
+        <input type="text" name="phone" value="{{ charity.phone }}" required>
+
+        <label>Upload New Registration Document:</label>
+        <input type="file" name="registrationDocs">
+        {% if charity.registrationDocs %}
+        <div class="file-preview">
+            <p>Current Logo:</p>
+            <img src="{{ charity.registrationDocs }}" alt="Charity Logo">
+        </div>
+        {% endif %}
+
+        <div class="buttons">
+            <button type="submit" class="btn">Update</button>
+            <a href="/charity_dashboard" class="btn">Back</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>

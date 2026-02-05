@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create New Campaign</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            background-image: url('{{ url_for("static", filename="images/purple_image.jpeg") }}');
+            background-size: cover;
+            background-repeat: no-repeat;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            background-color: white;
+            width: 50%;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+        h2 {
+            text-align: center;
+            color: #7b17c2;
+        }
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+        button {
+            margin-top: 25px;
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(115deg, #cf55e8, #7b17c2);
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>📝 Create New Campaign</h2>
+    <form method="POST" action="{{ url_for('create_campaign') }}">
+        <label for="title">Campaign Title</label>
+        <input type="text" id="title" name="title" required>
+
+        <label for="description">Description of the Purpose</label>
+        <textarea id="description" name="description" rows="4" required></textarea>
+
+        <label for="target_amount">Target Goal Amount (ETH)</label>
+        <input type="number" step="0.0001" id="target_amount" name="target_amount" required>
+
+        <label for="start_date">Start Date</label>
+        <input type="date" id="start_date" name="start_date" required>
+
+        <label for="end_date">End Date</label>
+        <input type="date" id="end_date" name="end_date" required>
+
+        <label for="category">Select Cause Category</label>
+        <select id="category" name="category" required>
+            <option value="">--Select Category--</option>
+            <option value="Education">Education</option>
+            <option value="Environment">Environment</option>
+            <option value="Healthcare">Healthcare</option>
+            <option value="Poverty">Poverty</option>
+            <option value="Animal Welfare">Animal Welfare</option>
+            <option value="Others">Others</option>
+        </select>
+
+        <button type="submit">Create Campaign</button>
+    </form>
+</div>
+
+</body>
+</html>

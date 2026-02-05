@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All Campaigns - Admin Panel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url("/static/images/purple_image.jpeg") no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background-color: white;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 90%;
+            margin: auto;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #7b17c2;
+            text-align: center;
+        }
+        .filter {
+            margin-bottom: 20px;
+            text-align: right;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            border: 1px solid #aaa;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #cf55e8;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f3eafd;
+        }
+        .btn {
+            background: linear-gradient(115deg, #cf55e8, #7b17c2);
+            color: white;
+            padding: 6px 10px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            padding-top: 80px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.6);
+        }
+        .modal-content {
+            background-color: #fff;
+            margin: auto;
+            padding: 30px;
+            border: 1px solid #888;
+            width: 60%;
+            border-radius: 15px;
+        }
+        .modal-content h3 {
+            color: #7b17c2;
+        }
+        .status-btn {
+            margin: 5px 5px 0 0;
+        }
+    </style>
+    <script>
+        function filterStatus(status) {
+            const rows = document.querySelectorAll("table tbody tr");
+            rows.forEach(row => {
+                const rowStatus = row.getAttribute("data-status");
+                row.style.display = (status === "all" || rowStatus === status) ? "" : "none";
+            });
+        }
+
+        function showModal(index) {
+            document.getElementById("modal-" + index).style.display = "block";
+        }
+
+        function hideModal(index) {
+            document.getElementById("modal-" + index).style.display = "none";
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>📦 All Campaigns Overview</h1>
+
+        <div class="filter">
+            <label for="status-filter"><strong>Filter by Status:</strong></label>
+            <select id="status-filter" onchange="filterStatus(this.value)">
+                <option value="all">All</option>
+                <option value="Ongoing">Ongoing</option>
+                <option value="Completed">Completed</option>
+                <option value="Goal Met">Goal Met</option>
+                <option value="Refunded">Refunded</option>
+            </select>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Category</th>
+                    <th>Target ETH</th>
+                    <th>Funds Raised</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for c in campaigns %}
+                <tr data-status="{{ c['status'] }}">
+                    <td>{{ c['title'] }}</td>
+                    <td>{{ c['category'] }}</td>
+                    <td>{{ c['targetAmountETH'] }}</td>
+                    <td>{{ c['fundsRaised'] }}</td>
+                    <td>{{ c['status'] }}</td>
+                    <td>
+                        <button class="btn" onclick="showModal({{ loop.index0 }})">🔍 Inspect</button>
+                    </td>
+                </tr>
+
+                <!-- Modal for campaign details -->
+                <div class="modal" id="modal-{{ loop.index0 }}">
+                    <div class="modal-content">
+                        <h3>{{ c['title'] }}</h3>
+                        <p><strong>Description:</strong> {{ c['description'] }}</p>
+                        <p><strong>Category:</strong> {{ c['category'] }}</p>
+                        <p><strong>Target:</strong> {{ c['targetAmountETH'] }}</p>
+                        <p><strong>Funds Raised:</strong> {{ c['fundsRaised'] }}</p>
+                        <p><strong>Start:</strong> {{ c['startDate'] }} | <strong>End:</strong> {{ c['endDate'] }}</p>
+                        <p><strong>Status:</strong> {{ c['status'] }}</p>
+
+                        <p><strong>Proof of Use:</strong></p>
+                        <a href="{{ c['proofOfUse'] }}" target="_blank">
+                            <button style="padding: 8px 12px; background: #7b17c2; color: white; border: none; border-radius: 6px;">
+                                📄 View Document
+                            </button>
+                        </a>
+                        <br><br>
+
+                        <form action="{{ url_for('flag_campaign') }}" method="POST" style="display:inline;">
+                            <input type="hidden" name="campaign_id" value="{{ c['campaignId'] }}">
+                            <input type="hidden" name="action" value="fraudulent">
+                            <button type="submit" class="btn status-btn" style="background:red;">🚩 Mark as Fraudulent</button>
+                        </form>
+
+                        <form action="{{ url_for('flag_campaign') }}" method="POST" style="display:inline;">
+                            <input type="hidden" name="campaign_id" value="{{ c['campaignId'] }}">
+                            <input type="hidden" name="action" value="verified">
+                            <button type="submit" class="btn status-btn" style="background:green;">✅ Mark as Verified</button>
+                        </form>
+
+                        <br><br>
+                        <button class="btn" onclick="hideModal({{ loop.index0 }})">Close</button>
+                    </div>
+                </div>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
